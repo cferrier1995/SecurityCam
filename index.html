@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Security Cam Demo</title>
+</head>
+<body>
+
+
+
+<div id="my_camera" style="width:320px; height:240px;"></div>
+<div id="my_result" style="display: none"></div>
+<div id="my_result2" style="display:none"></div>
+
+
+
+<h1>Set the program to allow access to your webcam, then take two snap shots. The raw difference in pixel value will be displayed</h1>
+<p id ="totalDifference"></p>
+
+
+<a href="javascript:void(take_snapshot())">Take Snapshot</a>
+<canvas id="canvas" width="300" height="227" style="float:left"></canvas>
+<canvas id="canvas2" width="300" height="227" style="float:left"></canvas>
+
+<script src="./js/webcam.js"></script>
+<script src="js/main.js"></script>
+
+<div id="color" style="width:200px;height:50px;float:left"></div>
+</body>
+</html>
