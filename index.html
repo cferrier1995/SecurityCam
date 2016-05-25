@@ -1,45 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Security Cam Demo</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Webcam Security Appe</title>
+
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
 <body>
+    <div class="container">
+
+        <div class="row page-header">
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-6">
+                <div class="jumbotron bg-info"><h2 class="text-center">Security Camera</h2></div>
+            </div>
+            <div class="col-md-3">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <!--Info Displayed if Debugging is Enabled-->
+                <div class = "center-block" id="debugInfo" style="display: none; text-align: center">
+                    <h4 style="text-align: center;">Debug Info</h4>
+                    <p id = "triggerCounter">Total Differences Over Threshold: N/A</p>
+                    <p id ="totalDifference">Total Difference: N/A</p>
+                    <p id ="potentialDifference">Potential Difference: N/A</p>
+                    <p id ="differenceRatio">Difference Ratio: N/A</p>
+                </div>
+            </div>
+            <div class="col-md-6 bg-info">
+                <div class = "center-block " id="my_camera" style="width:320px; height:240px;"></div>
+            </div>
+            <div class="col-md-3">
+            </div>
+        </div>
+
+        <div class ="row margin-top-20">
+            <p class="text-center bg-info lead">Hit 'Begin Monitoring' to start the Security Camera. </br> An Alert will sound if a significant difference is detected.</p>
+        </div>
+
+        <script src="./js/webcam.js"></script>
+
+        <!--Hidden, used as a 'hook' for javascript to view image information captured from webcam-->
+        <div id="my_result" style="display: none"></div>
+        <div id="my_result2" style="display:none"></div>
+
+        <div class = "row">
+            <div class = "col-md-2"></div>
+            <div class = "col-md-2">
+                <button type = "button" class ="btn btn-success btn-lg" onclick="startInterval()">Begin Monitoring</button>
+            </div>
+            <div class ="col-md-1"></div>
+            <div class = "col-md-2 text-center">
+                <button type = "button" class ="btn btn-info btn-lg" data-toggle="modal" data-target="#settingsModal">Settings</button>
+            </div>
+            <div class = "col-md-1"></div>
+            <div class = "col-md-2">
+                <button type = "button" class = "btn btn-danger btn-lg" onclick="stopInterval()">Stop Monitoring</button>
+            </div>
+            <div class = "col-md-2"></div>
+        </div>
+
+        <div class ="row">
+            <div class = "col-md-6">
+                <div class = "row">
+                    <h3 class = "text-center">Previous Image</h3>
+                </div>
+                <div class = "row center-block">
+                    <canvas id="canvas" class = "center-block" width="300" height="227"></canvas>
+                </div>
+            </div>
+            <div class = "col-md-6">
+                <div class = "row">
+                    <h3 class ="text-center">New Image</h3>
+                </div>
+                <div class = "row">
+                    <canvas id="canvas2" class = "center-block" width="300" height="227"></canvas
+                </div>
+            </div>
+        </div>
+
+        <script src="js/main.js"></script>
+
+        <div id="settingsModal" class="modal fade" role=>
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title text-center">Settings</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class = "row">
+                            <label id>Debug Info:   </label>
+                            <button onclick = "toggleDebug()" id="debugInfoToggle" class="btn btn-default">Show</button>
+                        </div>
+                        <div class = "row margin-top-05">
+                            <label id = "triggerThreshold">Current Trigger Threshold: 6%    </label>
+                            <button onclick="incThreshold()" class="btn btn-default" data-toggle="tooltip" title="Increase Difference Required to Trigger Alarm">Increase</button>
+                            <button onclick = "decThreshold()" class="btn btn-default" data-toggle="tooltip" title="Decrease Difference Required to Trigger Alarm">Decrease</button>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
 
 
-
-<div id="my_camera" style="width:320px; height:240px;"></div>
-
-<script src="./js/webcam.js"></script>
-
-<div id="my_result" style="display: none"></div>
-<div id="my_result2" style="display:none"></div>
-
-<h1>Set the program to allow access to your webcam, then hit the 'start polling' Button. Snapshots will be taken every 3 seconds and difference values will be displayed.</h1>
-<p id = "triggerThreshold"></p>
-<p id = "triggerCounter"></p>
-<p id ="totalDifference"></p>
-<p id ="potentialDifference"></p>
-<p id ="differenceRatio"></p>
-
-<script src="js/main.js"></script>
-
-
-
-<button onclick="startInterval()">Start Polling</button>
-<button onclick="stopInterval()">Stop Polling</button>
-<div id = "canvasBlock1">
-    <p>Previous Image</p>
-    <canvas id="canvas" width="300" height="227" style="float:left"></canvas>
-</div>
-<div id = "canvasBlock2">
-    <p>New Image</p>
-    <canvas id="canvas2" width="300" height="227" style="float:left"></canvas>
-</div>
-
-
-<script type="text/javascript">
-</script>
-
-</body>
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="bootstrap/js/bootstrap.min.js"></script>
+    </body>
 </html>

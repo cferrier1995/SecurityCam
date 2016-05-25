@@ -29,7 +29,8 @@ var Webcam = {
 		flip_horiz: false,     // flip image horiz (mirror mode)
 		fps: 30,               // camera frames per second
 		upload_name: 'webcam', // name of file in upload post data
-		constraints: null      // custom user media constraints
+		constraints: null,      // custom user media constraints
+		forceSWFOnChrome: true
 	},
 	
 	hooks: {}, // callback hook functions
@@ -37,7 +38,14 @@ var Webcam = {
 	init: function() {
 		// initialize, check for getUserMedia support
 		var self = this;
-		
+
+		var isChrome = !!window.chrome && !!window.chrome.webstore;
+		if (isChrome && this.params.forceSWFOnChrome)
+		{
+			this.params.force_flash = true;
+			alert("Due to Chrome Security Constraints, the camera is being run as a SWF. If this is undesirable please switch to an alternative browser.");
+		}
+
 		// Setup getUserMedia, with polyfill for older browsers
 		// Adapted from: https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
 		this.mediaDevices = (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) ? 
